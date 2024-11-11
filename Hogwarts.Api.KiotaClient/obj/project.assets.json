@@ -1,0 +1,78 @@
+{
+  "version": 3,
+  "targets": {
+    "net9.0": {}
+  },
+  "libraries": {},
+  "projectFileDependencyGroups": {
+    "net9.0": []
+  },
+  "packageFolders": {
+    "C:\\Users\\Vissc\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "D:\\Source\\apigeneration\\Hogwarts.Api.KiotaClient\\Hogwarts.Api.KiotaClient.csproj",
+      "projectName": "Hogwarts.Api.KiotaClient",
+      "projectPath": "D:\\Source\\apigeneration\\Hogwarts.Api.KiotaClient\\Hogwarts.Api.KiotaClient.csproj",
+      "packagesPath": "C:\\Users\\Vissc\\.nuget\\packages\\",
+      "outputPath": "D:\\Source\\apigeneration\\Hogwarts.Api.KiotaClient\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\Vissc\\AppData\\Roaming\\NuGet\\NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net9.0"
+      ],
+      "sources": {
+        "D:\\Source\\Rockstars\\Zwijsen\\content-services\\Content.Services\\Content.Services.Client\\bin\\Debug\\": {},
+        "D:\\Source\\Rockstars\\Zwijsen\\toets-service\\backend\\Toets.Service\\ToetsService.Api.Client\\bin\\Debug\\": {},
+        "D:\\Source\\Rockstars\\Zwijsen\\toets-service\\backend\\Toets.Service\\ToetsService.Api.Contracts\\bin\\Debug\\": {},
+        "D:\\Source\\Rockstars\\Zwijsen\\vdex-service\\Vdex.Service\\Vdex.Service.Lookup\\bin\\Debug": {},
+        "D:\\Source\\dotnet\\circular_packages\\TestLibrary1\\bin\\Debug\\": {},
+        "D:\\Source\\dotnet\\circular_packages\\TestLibrary2\\bin\\Debug\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "all"
+      },
+      "SdkAnalysisLevel": "9.0.100"
+    },
+    "frameworks": {
+      "net9.0": {
+        "targetAlias": "net9.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100-rc.2.24474.11/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

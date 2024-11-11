@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "help": "^3.0.2",
+    "Hogwarts.Api": "file:Hogwarts.Api.Contracts"
+  }
+}
