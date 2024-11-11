@@ -13,6 +13,83 @@ A project using typespec and kiota to create and api
 - 
 
 
+# Create API
+## .NET minimal API
+## Generating an API
+### NSwag
+### OpenAPI Generator
+
+# Create OpenAPI spec
+## .NET minimal API
+## NSwag
+## Swashbuckle
+## TypeSpec
+## 
+
+# Create a client
+## NSwag
+## Openapi Generator
+## Kiota
+
+# OpenAPI UI
+## Swagger
+## Scalar
+
+
+
+
+# dotnet minimal api
+[Minimal API Documentation](https://learn.microsoft.com/en-us/aspnet/core/tutorials/min-web-api?view=aspnetcore-8.0&tabs=visual-studio)
+[.NET 9 OpenAPI Documentation](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/aspnetcore-openapi?view=aspnetcore-8.0&tabs=visual-studio)
+
+## Creation
+```powershell
+dotnet new webapi -o Hogwarts.Net.Api
+```
+
+## Running the API
+```powershell
+dotnet run --project .\Hogwarts.Net.Api\Hogwarts.Net.Api.csproj
+```
+
+## Generating a client
+### NSwag
+```powershell
+nswag new
+```
+Edit the generated nswag.json
+
+```powershell
+nswag run
+```
+
+Navigate to http://localhost:5194/openapi/v1.json
+
+# Swagger UI
+[Documentation](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
+[Microsoft Documentation](https://learn.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger?view=aspnetcore-8.0)
+
+```powershell
+dotnet add .\Hogwarts.Net.Api\ package Swashbuckle.AspNetCore
+```
+
+Navigate to http://localhost:5194/swagger
+
+# Scalar UI
+[Documentation](https://github.com/scalar/scalar/blob/main/packages/scalar.aspnetcore/README.md)
+```powershell
+dotnet add .\Hogwarts.Net.Api\ package Scalar.AspNetCore
+```
+
+Nvaigate to http://localhost:5194/scalar/v1
+
+# NSwag 
+[Microsoft Documentation](https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-nswag?view=aspnetcore-8.0&tabs=visual-studio)
+
+```powershell
+dotnet add .\Hogwarts.Net.Api\ package NSwag.AspNetCore
+```
+
 # TypeSpec
 [Documentation](https://typespec.io/)
 
@@ -35,8 +112,10 @@ tsp compile .\Hogwarts.Api.TypeSpec.Contracts\ --output-dir .\tsp-output\
 tsp compile .\Hogwarts.Api.TypeSpec.Contracts\ --output-dir .\tsp-output\
 ```
 
+
 # Kiota
 [Documentation](https://learn.microsoft.com/en-us/openapi/kiota/overview)
+
 
 ## Install
 ```powershell
