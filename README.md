@@ -65,7 +65,9 @@ And we can also navigate to the API specification: http://localhost:5135/openapi
 
 ## Generating an API
 We can also generate an API. To do this however we will need to specify an OpenAPI specification first. With the samples above we navigated to this specification. We can save this and use this as a basis for our specification. But we could also start from scratch. See the [OpenAPI specification](https://swagger.io/specification/) to see how this works. 
-==Note that the OpenAPI specification can be written in json and yaml files==
+```
+Note that the OpenAPI specification can be written in json and yaml files
+```
 
 
 ### NSwag
