@@ -34,8 +34,10 @@ This will be plotted in the output.
 
 
 ### API Specification
-To see the API specification, navigate to: http://localhost:5280/openapi/v1.json
+To see the API specification, navigate to: http://localhost:\<port\>/openapi/v1.json
 
+### Adding logic
+<!-- @todo: describe how you would add logic to this setup. -->
 
 ## .NET Controllers
 [Microsoft Documentation](https://learn.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-8.0)
@@ -60,7 +62,11 @@ dotnet run --project .\Hogwarts.Api.NetControllersApi\
 ```
 
 ### OpenAPI Specification
-And we can also navigate to the API specification: http://localhost:5135/openapi/v1.json
+And we can also navigate to the API specification: http://localhost:\<port\>/openapi/v1.json
+
+
+### Adding logic
+<!-- @todo: describe how you would add logic to this setup. -->
 
 
 ## Generating an API
@@ -149,6 +155,10 @@ This will re-generated the routes and models but since we create implementations
 
 <!-- @todo: describe how to generate separate controllers per operationId -->
 
+#### Adding logic
+<!-- @todo: describe how you would add logic to this setup. -->
+
+
 ### OpenAPI Generator
 [Documentation](https://openapi-generator.tech)
 Next we are going to look at a tool called `OpenAPI Generator`.
@@ -191,20 +201,32 @@ dotnet run --project src\Org.OpenAPITools\Org.OpenAPITools.csproj
 #### Updating the contracts
 <!-- @todo: describe how to update the contracts -->
 
+#### Adding logic
+<!-- @todo: describe how you would add logic to this setup. -->
+
 
 # Create OpenAPI spec
 As described before, an OpenAPI specification can be created by writing it by hand using the [OpenAPI Specification](https://swagger.io/specification/) but this might be a bit teadious. We can also generate the specification. The next part of this document describes a couple of tools that can help you with this.
 
 
 ## .NET minimal API
+<!-- @todo: describe how minimal apis generate the openapi specification -->
+
+## .NET Controller API
+<!-- @todo: describe the difference between the minimal and the controller api specification. -->
+
 ## NSwag
 <!-- @todo: describe how NSwag can be used to generate an OpenAPI Specification.
 [Microsoft Documentation](https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-nswag?view=aspnetcore-8.0&tabs=visual-studio)
 
 ```powershell
 dotnet add .\Hogwarts.Net.Api\ package NSwag.AspNetCore
-``` -->
+``` 
+-->
+
 ## Swashbuckle
+<!-- @todo: describe how to generate an openapi specification using swashbuckle -->
+
 ## TypeSpec
 [Documentation](https://typespec.io/)
 
@@ -226,10 +248,11 @@ tsp compile .\Hogwarts.Api.TypeSpec.Contracts\ --output-dir .\tsp-output\
 ```powershell
 tsp compile .\Hogwarts.Api.TypeSpec.Contracts\ --output-dir .\tsp-output\
 ```
-## 
 
 # Create a client
 ## NSwag
+<!-- @todo: describe how to generate a client using NSwag -->
+
 ## Openapi Generator
 <!-- @todo: describe how to generate a client using OpenAPI Generator
  # OpenAPI Generator
@@ -292,6 +315,7 @@ Navigate to http://localhost:<port>/scalar/v1
 - Try out some complex models
 - Figure out how this all would work in ci/cd
 - Testing the Kiota generated client(s)
+- Split the readme files in shorted files.
 
 <!-- @todo: research openapi tools
 # Openapi tools
@@ -301,4 +325,13 @@ Navigate to http://localhost:<port>/scalar/v1
 ```powershell
 dotnet tool install -g Microsoft.dotnet-openapi
 ```
+ -->
+
+ <!-- @todo: research other Microsoft OpenAPI tools:
+ [OpenAPI Tools](https://github.com/microsoft/OpenAPI.NET) 
+ ## Hidi
+ [Documentation](https://github.com/microsoft/OpenAPI.NET/blob/vnext/src/Microsoft.OpenApi.Hidi/readme.md)
+ ```powershell
+ dotnet tool install --global Microsoft.OpenApi.Hidi
+ ```
  -->

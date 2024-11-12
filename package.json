@@ -1,6 +1,9 @@
 {
   "dependencies": {
+    "@openapitools/openapi-generator-cli": "^2.15.3",
+    "@typespec/compiler": "^0.62.0",
     "help": "^3.0.2",
-    "Hogwarts.Api": "file:Hogwarts.Api.Contracts"
+    "Hogwarts.Api": "file:Hogwarts.Api.Contracts",
+    "nswag": "^14.1.0"
   }
 }
