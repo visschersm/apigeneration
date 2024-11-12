@@ -5,7 +5,7 @@ using Microsoft.Kiota.Abstractions.Serialization;
 using System.Collections.Generic;
 using System.IO;
 using System;
-namespace Hogwarts.Api.Client.Models
+namespace ApiSdk.Models
 {
     [global::System.CodeDom.Compiler.GeneratedCode("Kiota", "1.0.0")]
     #pragma warning disable CS1591
@@ -14,6 +14,14 @@ namespace Hogwarts.Api.Client.Models
     {
         /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
         public IDictionary<string, object> AdditionalData { get; set; }
+        /// <summary>The firstName property</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public string? FirstName { get; set; }
+#nullable restore
+#else
+        public string FirstName { get; set; }
+#endif
         /// <summary>The fullname property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -24,8 +32,16 @@ namespace Hogwarts.Api.Client.Models
 #endif
         /// <summary>The id property</summary>
         public int? Id { get; set; }
+        /// <summary>The surname property</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public string? Surname { get; set; }
+#nullable restore
+#else
+        public string Surname { get; set; }
+#endif
         /// <summary>
-        /// Instantiates a new <see cref="global::Hogwarts.Api.Client.Models.Student"/> and sets the default values.
+        /// Instantiates a new <see cref="global::ApiSdk.Models.Student"/> and sets the default values.
         /// </summary>
         public Student()
         {
@@ -34,12 +50,12 @@ namespace Hogwarts.Api.Client.Models
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
-        /// <returns>A <see cref="global::Hogwarts.Api.Client.Models.Student"/></returns>
+        /// <returns>A <see cref="global::ApiSdk.Models.Student"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
-        public static global::Hogwarts.Api.Client.Models.Student CreateFromDiscriminatorValue(IParseNode parseNode)
+        public static global::ApiSdk.Models.Student CreateFromDiscriminatorValue(IParseNode parseNode)
         {
             _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
-            return new global::Hogwarts.Api.Client.Models.Student();
+            return new global::ApiSdk.Models.Student();
         }
         /// <summary>
         /// The deserialization information for the current model
@@ -49,8 +65,10 @@ namespace Hogwarts.Api.Client.Models
         {
             return new Dictionary<string, Action<IParseNode>>
             {
+                { "firstName", n => { FirstName = n.GetStringValue(); } },
                 { "fullname", n => { Fullname = n.GetStringValue(); } },
                 { "id", n => { Id = n.GetIntValue(); } },
+                { "surname", n => { Surname = n.GetStringValue(); } },
             };
         }
         /// <summary>
@@ -60,8 +78,10 @@ namespace Hogwarts.Api.Client.Models
         public virtual void Serialize(ISerializationWriter writer)
         {
             _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            writer.WriteStringValue("firstName", FirstName);
             writer.WriteStringValue("fullname", Fullname);
             writer.WriteIntValue("id", Id);
+            writer.WriteStringValue("surname", Surname);
             writer.WriteAdditionalData(AdditionalData);
         }
     }

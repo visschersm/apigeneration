@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: Hogwarts.Api.NetMinimalApi | v1
+  title: Hogwarts.Api | v1
   version: 1.0.0
 servers:
   - url: http://localhost:5280

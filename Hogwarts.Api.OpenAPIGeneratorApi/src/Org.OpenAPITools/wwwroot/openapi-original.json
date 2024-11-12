@@ -1,0 +1,66 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "Hogwarts.Api.NetMinimalApi | v1",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:5280"
+  } ],
+  "tags" : [ {
+    "name" : "Hogwarts.Api.NetMinimalApi"
+  } ],
+  "paths" : {
+    "/students" : {
+      "get" : {
+        "operationId" : "GetStudents",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/Student"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "tags" : [ "Hogwarts.Api.NetMinimalApi" ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Student" : {
+        "example" : {
+          "firstName" : "firstName",
+          "surname" : "surname",
+          "id" : 0,
+          "fullname" : "fullname"
+        },
+        "properties" : {
+          "id" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "firstName" : {
+            "type" : "string"
+          },
+          "surname" : {
+            "type" : "string"
+          },
+          "fullname" : {
+            "nullable" : true,
+            "type" : "string"
+          }
+        },
+        "required" : [ "firstName", "id", "surname" ],
+        "type" : "object"
+      }
+    }
+  }
+}

@@ -65,6 +65,7 @@ And we can also navigate to the API specification: http://localhost:5135/openapi
 
 ## Generating an API
 We can also generate an API. To do this however we will need to specify an OpenAPI specification first. With the samples above we navigated to this specification. We can save this and use this as a basis for our specification. But we could also start from scratch. See the [OpenAPI specification](https://swagger.io/specification/) to see how this works. 
+
 ```
 Note that the OpenAPI specification can be written in json and yaml files
 ```
@@ -75,18 +76,18 @@ Note that the OpenAPI specification can be written in json and yaml files
 [NSwag Documentation](https://github.com/RicoSuter/NSwag)
 When we have our OpenAPI specification we are able to generate our API. The first tool we are going to examine is NSwag.
 
-### Installing NSwag
+#### Installing NSwag
 To install the NSwag cli tool. We will use npm.
 
 ```powershell
 npm install nswag -g
 ```
 
-### Setting up the project
-First we will create a directory and generate a NSwag file:
+#### Setting up the project
+First we will create a dotnet webapi controller project and generate a NSwag file:
 
 ```powershell
-mkdir Hogwarts.Api.NSwagApi
+dotnet new webapi -o Hogwarts.Api.NSwagApi -controllers
 cd Hogwarts.Api.NSwagApi
 nswag new
 ```
@@ -97,57 +98,176 @@ In the `nswag.json` file we will only use the `openApiToCSharpController` codege
 
 For now change the `url` field from `documentGenerator/fromDocument` to your OpenAPI specification file. I created mine in a folder `Hogwarts.Api.Contracts` so my `url` is set to: `"../Hogwarts.Api.Contracts/openapi.yml"`. Next make sure to set the field `output` in your codegenerator settings. I have set mine to `"Hogwarts.Api.NSwagApi.g.cs"` \*.g.\* is used to show the file is generated.
 
-### Generating the API
+#### Generating the API
 That should be enough to generate the API. To generate the api we only have to run a simple command:
 ```powershell
 nswag run .\Hogwarts.Api.NSwagApi\nswag.json
 ```
 
+To use our generated controllers we derive our implementations from the generated controller. I added a studentController and derived it from IController. Do not forget to register this in your dependency injection.
+```csharp
+public class StudentController : IController
+{
+    public Task<ICollection<Student>> GetStudentsAsync()
+    {
+        return Task.FromResult<ICollection<Student>>(new Student[]
+        {
+            new Student
+            {
+                Id = 1,
+                FirstName = "Harry",
+                Surname ="Potter"
+            },
+            new Student
+            {
+                Id = 2,
+                FirstName = "Ronald",
+                Surname = "Weasley"
+            },
+            new Student
+            {
+                Id = 3,
+                FirstName = "Hermione",
+                Surname = "Granger"
+            }
+        });
+    }
+}
+```
+
+```csharp
+builder.Services.AddTransient<IController, StudentController>();
+```
+
+#### Updating the generated contracts
+To update the models and controllers we just run the command again:
+```powershell
+nswag run .\Hogwarts.Api.NSwagApi\nswag.json
+```
+
+This will re-generated the routes and models but since we create implementations based on interfaces, the implementations will keep working. (as long as there are no breaking changes in the updated contracts)
+
+<!-- @todo: describe how to generate separate controllers per operationId -->
+
 ### OpenAPI Generator
+[Documentation](https://openapi-generator.tech)
+Next we are going to look at a tool called `OpenAPI Generator`.
+
+#### Install OpenAPI Generator
+To install the tool we use npm:
+
+```powershell
+npm install @openapitools/openapi-generator-cli -g
+```
+
+#### Generate API
+To generate the API we run the following command:
+
+```powershell
+openapi-generator-cli generate -i '.\Hogwarts.Api.Contracts\openapi.yml' -g aspnetcore -o Hogwarts.Api.OpenAPIGeneratorApi 
+.\Hogwarts.Api.OpenAPIGeneratorApi\build.bat
+```
+
+This will create a lot more files than NSwag does. At a later time I will extend this document to provide some insights on what these files are and how we would alter the generation process.
+
+<!--
+@todo process this
+- Altered the use urls in the program.cs
+- build.bat uses -p which is deprecated.
+- What are all the files that are generated?
+- How do we change the naming?
+- Why does the docker command not work?
+- What is the wwwroot for?
+- How would we add our own logic to this?
+-->
+
+#### Running the API
+The source code of our API is generated under the `src/Org.OpenAPITools` to run this we can run the command and set the `--project` flag to the project:
+
+```powershell
+dotnet run --project src\Org.OpenAPITools\Org.OpenAPITools.csproj
+```
+
+#### Updating the contracts
+<!-- @todo: describe how to update the contracts -->
+
 
 # Create OpenAPI spec
+As described before, an OpenAPI specification can be created by writing it by hand using the [OpenAPI Specification](https://swagger.io/specification/) but this might be a bit teadious. We can also generate the specification. The next part of this document describes a couple of tools that can help you with this.
+
+
 ## .NET minimal API
 ## NSwag
+<!-- @todo: describe how NSwag can be used to generate an OpenAPI Specification.
+[Microsoft Documentation](https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-nswag?view=aspnetcore-8.0&tabs=visual-studio)
+
+```powershell
+dotnet add .\Hogwarts.Net.Api\ package NSwag.AspNetCore
+``` -->
 ## Swashbuckle
 ## TypeSpec
+[Documentation](https://typespec.io/)
+
+### Starting new project
+```powershell
+npm install -g @typespec/compiler
+tsp init
+tsp install
+```
+
+### Compiling contracts
+```powershell
+npm install -g @typespec/compiler
+tsp install
+tsp compile .\Hogwarts.Api.TypeSpec.Contracts\ --output-dir .\tsp-output\
+```
+
+### Update contracts
+```powershell
+tsp compile .\Hogwarts.Api.TypeSpec.Contracts\ --output-dir .\tsp-output\
+```
 ## 
 
 # Create a client
 ## NSwag
 ## Openapi Generator
+<!-- @todo: describe how to generate a client using OpenAPI Generator
+ # OpenAPI Generator
+## Generate Client
+```powershell
+openapi-generator-cli generate -i '.\Hogwarts.Api.Contracts\tsp-output\@typespec\openapi3\openapi.yaml' -g csharp -o Hogwarts.Api.OpenApiGeneratorClient
+``` -->
 ## Kiota
+[Documentation](https://learn.microsoft.com/en-us/openapi/kiota/overview)
+
+
+### Install
+To install Kiota run the following command:
+```powershell
+dotnet tool install --global Microsoft.OpenApi.Kiota
+```
+
+### Create client using Kiota
+To create a client project we first create a dotnet classlib project by running the following command:
+```powershell
+dotnet new classlib -o Hogwarts.Api.KiotaClient
+```
+
+The client is then generated by running the following kiota command:
+```powershell
+kiota generate -l CSharp -d .\Hogwarts.Api.Contracts\openapi.yml -o .\Hogwarts.Api.KiotaClient\
+```
+
+### Updating the client
+To update the generated contracts run the following command:
+```powershell
+kiota update -o .\Hogwarts.Api.KiotaClient\
+```
+
 
 # OpenAPI UI
+
 ## Swagger
-## Scalar
-
-# TODO
-- NSwag client generation
-- 
-- Define what you should know about defining the nswag file
-- 
-- Add http test requests
-- Add scalar instead of swagger ui
-- Try out some complex models
-- Figure out how this all would work in ci/cd
-- Testing the Kiota generated client(s)
-- 
-
-
-## Generating a client
-### NSwag
-```powershell
-nswag new
-```
-Edit the generated nswag.json
-
-```powershell
-nswag run
-```
-
-Navigate to http://localhost:5194/openapi/v1.json
-
-# Swagger UI
 [Documentation](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
 [Microsoft Documentation](https://learn.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger?view=aspnetcore-8.0)
 
@@ -155,114 +275,25 @@ Navigate to http://localhost:5194/openapi/v1.json
 dotnet add .\Hogwarts.Net.Api\ package Swashbuckle.AspNetCore
 ```
 
-Navigate to http://localhost:5194/swagger
+Navigate to http://localhost:<port>/swagger
 
-# Scalar UI
+
+## Scalar
 [Documentation](https://github.com/scalar/scalar/blob/main/packages/scalar.aspnetcore/README.md)
 ```powershell
 dotnet add .\Hogwarts.Net.Api\ package Scalar.AspNetCore
 ```
 
-Nvaigate to http://localhost:5194/scalar/v1
+Navigate to http://localhost:<port>/scalar/v1
 
-# NSwag 
-[Microsoft Documentation](https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-nswag?view=aspnetcore-8.0&tabs=visual-studio)
+# TODO
+- Define what you should know about defining the nswag file
+- Add http test requests
+- Try out some complex models
+- Figure out how this all would work in ci/cd
+- Testing the Kiota generated client(s)
 
-```powershell
-dotnet add .\Hogwarts.Net.Api\ package NSwag.AspNetCore
-```
-
-# TypeSpec
-[Documentation](https://typespec.io/)
-
-## Starting new project
-```powershell
-npm install -g @typespec/compiler
-tsp init
-tsp install
-```
-
-## Compiling contracts
-```powershell
-npm install -g @typespec/compiler
-tsp install
-tsp compile .\Hogwarts.Api.TypeSpec.Contracts\ --output-dir .\tsp-output\
-```
-
-## Update contracts
-```powershell
-tsp compile .\Hogwarts.Api.TypeSpec.Contracts\ --output-dir .\tsp-output\
-```
-
-
-# Kiota
-[Documentation](https://learn.microsoft.com/en-us/openapi/kiota/overview)
-
-
-## Install
-```powershell
-dotnet tool install --global Microsoft.OpenApi.Kiota
-dotnet new classlib -o Hogwarts.Api.KiotaClient
-```
-
-## Create client using Kiota
-
-### Using typespec contracts
-```powershell
-kiota generate -l CSharp -n Hogwarts.Api.Client -d '.\tsp-output\@typespec\openapi3\openapi.yaml' -o .\Hogwarts.Api.KiotaClient\
-```
-
-# NSwag
-[Documentation](https://github.com/RicoSuter/NSwag)
-
-## Install NSwag
-
-## Start new NSwag project
-```powershell
-nswag new
-```
-
-
-## Generating using NSwag
-With NSwag we can define the generations to be done using the nswag.json file which is generated when using `nswag new`
-Noteworthy generators: `openApiToCSharpController` and `openApiToCSharpClient` to help generating the api server and client.
-Remember that when the output is not set, no generation will be done.
-
-For now we need to run it from the API folder. This due to a bug in the NSwag generator:
-```powershell
-nswag run /runtime:net80
-```
-
-When the bug is resolved we should be able to run it like this:
-```powershell
-nswag run .\Hogwarts.Api\nswag.json /runtime:Net80
-```
-
-## Generating only the controller (deprecated):
-```powershell
-nswag openapi2cscontroller /input:.\tsp-output\@typespec\openapi3\openapi.yaml /output:Hogwarts.Api.Contracts
-```
-
-# openapi-generator
-[Documentation](https://openapi-generator.tech)
-
-## Install openapi-generator
-```powershell
-npm install @openapitools/openapi-generator-cli -g
-```
-
-## Generate API
-```powershell
-openapi-generator-cli generate -i '.\Hogwarts.Api.Contracts\tsp-output\@typespec\openapi3\openapi.yaml' -g aspnetcore -o Hogwarts.OpenApiGenerator.Api 
-.\Hogwarts.Api\build.bat
-```
-
-## Generate Client
-```powershell
-openapi-generator-cli generate -i '.\Hogwarts.Api.Contracts\tsp-output\@typespec\openapi3\openapi.yaml' -g csharp -o Hogwarts.Api.OpenApiGeneratorClient
-```
-
-
+<!-- @todo: research openapi tools
 # Openapi tools
 [Documentation](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/openapi-tools?view=aspnetcore-8.0)
 
@@ -270,3 +301,4 @@ openapi-generator-cli generate -i '.\Hogwarts.Api.Contracts\tsp-output\@typespec
 ```powershell
 dotnet tool install -g Microsoft.dotnet-openapi
 ```
+ -->

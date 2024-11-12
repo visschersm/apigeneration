@@ -1,0 +1,6 @@
+@Hogwarts.Api.NSwagApi_HostAddress = http://localhost:5066
+
+GET {{Hogwarts.Api.NSwagApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
