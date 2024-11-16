@@ -21,11 +21,14 @@ var students = new Student[]
     new Student(3, "Hermione", "Granger")
 };
 
-app.MapGet("/students", () =>
-{
-    return students;
-})
-.WithName("GetStudents");
+var studentsGroup = app.MapGroup("/students");
+
+studentsGroup.MapGet("/", async (StudentService service) =>
+    await service.GetStudents());
+
+studentsGroup.MapGet("/{id}", async (int id, StudentService service) =>
+    await service.GetStuent(id);
+
 
 app.Run();
 
