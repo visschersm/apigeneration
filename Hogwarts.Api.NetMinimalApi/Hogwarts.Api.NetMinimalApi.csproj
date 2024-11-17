@@ -7,7 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0-rc.2.24474.3" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hogwarts.Api.NetContracts\Hogwarts.Api.NetContracts.csproj" />
+    <ProjectReference Include="..\Hogwarts.Api.Domain\Hogwarts.Api.Domain.csproj" />
+    <ProjectReference Include="..\Hogwarts.Api.Service\Hogwarts.Api.Service.csproj" />
   </ItemGroup>
 
 </Project>
