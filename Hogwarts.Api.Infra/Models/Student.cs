@@ -1,6 +1,11 @@
 ﻿namespace Hogwarts.Api.Infra.Models;
 
-public record Student(int Id, string FirstName, string Surname)
+public class Student
 {
+    public Student(string firstName, string surName)
+        => (FirstName, Surname) = (firstName, surName);
+    public int Id { get; init; }
+    public string FirstName { get; set; }
+    public string Surname { get; set; }
     public string Fullname => $"{FirstName} {Surname}";
 }
