@@ -8,12 +8,15 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />
+    <PackageReference Include="NSwag.AspNetCore" Version="14.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Hogwarts.Api.NetContracts\Hogwarts.Api.NetContracts.csproj" />
     <ProjectReference Include="..\Hogwarts.Api.Domain\Hogwarts.Api.Domain.csproj" />
     <ProjectReference Include="..\Hogwarts.Api.Service\Hogwarts.Api.Service.csproj" />
+    <ProjectReference Include="..\Hogwarts.Api.Infra\Hogwarts.Api.Infra.csproj" />
   </ItemGroup>
 
 </Project>

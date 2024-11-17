@@ -1,51 +1,62 @@
 using Hogwarts.Api.Service;
 using Hogwarts.Api.Domain;
 using Hogwarts.Api.NetContracts;
+using Hogwarts.Api.Infra;
+using Microsoft.EntityFrameworkCore;
+using Hogwarts.Api.NetMinimalApi.Mappers;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("Hogwarts"));
+
+// NSwag
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddOpenApiDocument(config =>
+{
+    config.DocumentName = "HogwartsApi";
+    config.Title = "HogwartsApi v1";
+    config.Version = "v1";
+});
+
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// builder.Services.AddOpenApi();
+
+builder.Services.AddTransient<StudentService>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    //app.MapOpenApi();
+
+    app.UseOpenApi();
+    app.UseSwaggerUi(config =>
+    {
+        config.DocumentTitle = "HogwartsAPI";
+        config.Path = "/swagger";
+        config.DocumentPath = "/swagger/{documentName}/swagger.json";
+        config.DocExpansion = "list";
+    });
 }
 
 app.UseHttpsRedirection();
 
-var students = new Student[]
-{
-    new Student(1, "Harry", "Potter"),
-    new Student(2, "Ronald", "Weasley"),
-    new Student(3, "Hermione", "Granger")
-};
-
 var studentsGroup = app.MapGroup("/students");
 
-studentsGroup.MapPost("/", async (Hogwarts.Api.NetContracts.Student student, StudentService service) =>
+studentsGroup.MapPost("/", async (Hogwarts.Api.NetContracts.CreateStudent student, StudentService service) =>
 {
-    var domainStudent = new Hogwarts.Api.Domain.Student
-    {
-        FirstName = student.FirstName,
-        Surname = student.Surname
-    };
+    var domainStudent = StudentMapper.MapToDomain(student);
     await service.Create(domainStudent);
 });
 
 studentsGroup.MapGet("/", async (StudentService service) =>
 {
     var students = await service.Get();
-    return students.Select(student => new Hogwarts.Api.NetContracts.Student
-    {
-        Id = student.Id,
-        FirstName = student.FirstName,
-        Surname = student.Surname
-    });
+    var studentList = StudentMapper.MapToListContract(students);
+    return studentList;
 });
 
 
@@ -58,11 +69,9 @@ studentsGroup.MapGet("/{id}", async (int id, StudentService service) =>
         return Results.NotFound();
     }
 
-    return Results.Ok(new Hogwarts.Api.NetContracts.Student
-    {
-        FirstName = student.FirstName,
-        Surname = student.Surname,
-    });
+    var detailedStudent = StudentMapper.MapToDetailedContract(student);
+
+    return Results.Ok(detailedStudent);
 });
 
 studentsGroup.MapPut("/{id}", async (int id, Hogwarts.Api.NetContracts.Student inputStudent, StudentService service) =>

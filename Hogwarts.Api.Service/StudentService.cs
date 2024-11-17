@@ -3,6 +3,7 @@ using Hogwarts.Api.Domain;
 using Hogwarts.Api.Infra.Models;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Hogwarts.Api.Service.Mappers;
 
 namespace Hogwarts.Api.Service;
 
@@ -15,9 +16,10 @@ public class StudentService
         _context = context;
     }
 
-    public async Task Create(Domain.Student student)
+    public async Task Create(Domain.Student domainStudent)
     {
-        _context.Students.Add(new Hogwarts.Api.Infra.Models.Student(student.FirstName, student.Surname));
+        var student = StudentMapper.MapToInfra(domainStudent);
+        _context.Students.Add(student);
         await _context.SaveChangesAsync();
     }
 
